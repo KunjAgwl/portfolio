@@ -1,0 +1,198 @@
+/* Daft Punk Ultra-Refined Cyber Design System */
+:root {
+  --font-display: 'Orbitron', sans-serif;
+  --font-sub: 'Rajdhani', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-body: 'Inter', sans-serif;
+
+  /* Refined Color Palette */
+  --gold-primary: #ffd700;
+  --gold-glow: rgba(255, 215, 0, 0.35);
+  --silver-primary: #00f0ff;
+  --silver-glow: rgba(0, 240, 255, 0.35);
+
+  --accent: var(--gold-primary);
+  --accent-glow: var(--gold-glow);
+  --accent-secondary: var(--silver-primary);
+
+  /* Deep Titanium & Obsidian Palette */
+  --bg-dark: #050507;
+  --bg-card: rgba(13, 14, 20, 0.7);
+  --bg-card-hover: rgba(20, 22, 32, 0.85);
+  --border-metallic: rgba(255, 255, 255, 0.08);
+  --text-main: #e2e8f0;
+  --text-muted: #8492a6;
+}
+
+[data-theme="silver"] {
+  --accent: #00f0ff;
+  --accent-glow: rgba(0, 240, 255, 0.35);
+  --accent-secondary: #ffd700;
+}
+
+[data-theme="gold"] {
+  --accent: #ffd700;
+  --accent-glow: rgba(255, 215, 0, 0.35);
+  --accent-secondary: #ff0055;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 15px; /* Refined base font sizing */
+}
+
+body.daft-body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(255, 215, 0, 0.05) 0%, transparent 50%),
+    linear-gradient(to bottom, #050507 0%, #090a0f 100%);
+}
+
+/* Subtle Subtle CRT Scanlines (Ultra-Light Opacity) */
+body.daft-body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.15) 50%
+  );
+  background-size: 100% 3px;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.15;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #050507;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 215, 0, 0.4);
+  border-radius: 3px;
+}
+
+/* Typography Utilities */
+.font-display {
+  font-family: var(--font-display);
+}
+.font-sub {
+  font-family: var(--font-sub);
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.text-glow {
+  text-shadow: 0 0 10px var(--accent-glow);
+}
+
+.text-glow-gold {
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+/* Chrome Metallic Cards - Sleek 1px Borders */
+.chrome-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-metallic);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.chrome-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.3;
+  transition: opacity 0.25s;
+}
+
+.chrome-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 12px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+.chrome-card:hover::before {
+  opacity: 0.9;
+}
+
+/* Compact LED Button */
+.led-button {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #181b26 0%, #0d0f17 100%);
+  color: var(--accent);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  box-shadow: 0 0 8px var(--accent-glow);
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.led-button:hover {
+  background: var(--accent);
+  color: #000;
+  box-shadow: 0 0 15px var(--accent);
+}
+
+.led-button:active {
+  transform: scale(0.97);
+}
+
+/* Compact Pulse Badge */
+.pulse-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: var(--accent);
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
