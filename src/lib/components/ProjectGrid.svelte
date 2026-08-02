@@ -71,14 +71,14 @@
 </script>
 
 <div class="projects-section my-6">
-  <div class="flex flex-wrap justify-between items-center mb-4 gap-3">
+  <div class="flex justify-between items-center mb-4">
     <div class="flex items-center gap-2">
       <div class="p-1.5 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
         <FolderGit2 class="w-5 h-5" />
       </div>
       <div>
-        <h2 class="font-display text-xl sm:text-2xl font-bold tracking-wide text-glow uppercase">
-          PROJECT ARCHIVES
+        <h2 class="font-display text-xl sm:text-2xl font-bold tracking-wide text-silver-gradient uppercase">
+          05 // PROJECT ARCHIVES
         </h2>
         <p class="font-mono text-[11px] text-slate-400">ROBOTICS • AI/ML • CLIENT WEBSITES • APPS</p>
       </div>
@@ -108,7 +108,7 @@
       <div class="chrome-card p-4 flex flex-col justify-between group">
         <div>
           <div class="flex justify-between items-start mb-2.5">
-            <div class="p-2 rounded-lg bg-black/40 border" style="border-color: {proj.accent}; color: {proj.accent}">
+            <div class="p-2 rounded-lg bg-black/60 border" style="border-color: {proj.accent}; color: {proj.accent}">
               <proj.icon class="w-5 h-5" />
             </div>
             <span class="font-mono text-[9px] px-2 py-0.5 rounded bg-white/5 border border-white/10 text-slate-300 uppercase">
@@ -129,7 +129,7 @@
           <!-- Tags -->
           <div class="flex flex-wrap gap-1 mb-4">
             {#each proj.tags as tag}
-              <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-black/30 border border-white/5 text-slate-400">
+              <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-black/40 border border-white/5 text-slate-400">
                 #{tag}
               </span>
             {/each}
