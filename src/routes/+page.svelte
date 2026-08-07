@@ -7,7 +7,6 @@
   import FooterMarquee from '$lib/components/FooterMarquee.svelte';
   import VentureCard from '$lib/components/VentureCard.svelte';
   import CyberTerminal from '$lib/components/CyberTerminal.svelte';
-  import InteractiveVisuals from '$lib/components/InteractiveVisuals.svelte';
 
   let activeTab = $state('HOME');
 
@@ -28,9 +27,7 @@
         <RetroMainHeader />
         <WhoAmITerminal />
 
-        {#if activeTab === 'HOME'}
-          <InteractiveVisuals />
-        {:else if activeTab === 'ABOUT' || activeTab === 'REWIND' || activeTab === 'VENTURES'}
+        {#if activeTab === 'ABOUT' || activeTab === 'REWIND' || activeTab === 'VENTURES'}
           <VentureCard />
         {:else if activeTab === 'CONTACT'}
           <CyberTerminal />
@@ -38,7 +35,7 @@
       </div>
     </div>
 
-    <!-- Right Column Panel -->
+    <!-- Right Column Panel (Contains Live AI Neural Network Topology Canvas) -->
     <RetroRightPanel />
   </div>
 
