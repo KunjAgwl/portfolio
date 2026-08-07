@@ -1,147 +1,135 @@
 <script>
-  import { TrendingUp, Rocket, ShieldCheck, Award, Layers } from '@lucide/svelte';
+  import { audio } from '../audio.js';
+
   let { theme = 'gold' } = $props();
 
-  let activeTab = $state('MERRICKSON');
+  let activeVenture = $state('revenue');
+
+  function setVenture(id) {
+    audio.playSound('technologic');
+    activeVenture = id;
+  }
 </script>
 
-<div class="ventures-section my-6">
-  <div class="flex justify-between items-center mb-4">
-    <div class="flex items-center gap-2">
-      <div class="p-1.5 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400">
-        <Award class="w-5 h-5" />
+<div class="retro-sub-box font-mono my-2 p-3">
+  <div class="sub-box-header">
+    <span class="text-amber-bright font-bold text-xs flex items-center gap-1.5">
+      <span class="w-1.5 h-1.5 rounded-full bg-green-bright animate-ping"></span>
+      <span>VENTURES & REVENUE TELEMETRY // ₹2,00,000 MILESTONE</span>
+    </span>
+    <span class="text-muted text-[10px]">↗</span>
+  </div>
+
+  <!-- Hero Revenue Milestone Banner -->
+  <div class="bg-black p-3 rounded border border-[var(--border-amber-light)] mb-3 flex flex-wrap items-center justify-between gap-2 shadow-lg">
+    <div>
+      <div class="text-[10px] text-muted tracking-wider">TOTAL COMBINED VENTURE REVENUE</div>
+      <div class="text-green-bright font-bold text-xl sm:text-2xl flex items-center gap-2">
+        <span>₹2,00,000 INR</span>
+        <span class="text-xs text-amber font-normal">(₹2 LAKHS)</span>
       </div>
-      <div>
-        <h2 class="font-display text-xl sm:text-2xl font-bold tracking-wide text-gold-gradient uppercase">
-          02 // VENTURES & REVENUE DECK
-        </h2>
-        <p class="font-mono text-[11px] text-slate-400">CO-FOUNDED AGENCIES & METRIC TRACK RECORD</p>
+      <div class="text-[10px] text-amber font-mono mt-0.5">
+        TIMELINE: <span class="text-green font-bold">60 DAYS (2 MONTHS)</span> • BOOTSTRAPPED & PROFITABLE
       </div>
     </div>
-
-    <!-- Venture Tab Switcher -->
-    <div class="flex gap-1.5">
-      <button 
-        onclick={() => activeTab = 'MERRICKSON'}
-        class="px-3 py-1 rounded font-mono text-[11px] font-bold uppercase transition-all border"
-        class:bg-amber-400={activeTab === 'MERRICKSON'}
-        class:text-black={activeTab === 'MERRICKSON'}
-        class:border-amber-400={activeTab === 'MERRICKSON'}
-        class:border-white-10={activeTab !== 'MERRICKSON'}
-        class:text-slate-400={activeTab !== 'MERRICKSON'}
-      >
-        MERRICKSON
-      </button>
-
-      <button 
-        onclick={() => activeTab = 'RAAW_THEORY'}
-        class="px-3 py-1 rounded font-mono text-[11px] font-bold uppercase transition-all border"
-        class:bg-cyan-400={activeTab === 'RAAW_THEORY'}
-        class:text-black={activeTab === 'RAAW_THEORY'}
-        class:border-cyan-400={activeTab === 'RAAW_THEORY'}
-        class:border-white-10={activeTab !== 'RAAW_THEORY'}
-        class:text-slate-400={activeTab !== 'RAAW_THEORY'}
-      >
-        RAAW THEORY
-      </button>
+    <div class="flex gap-2">
+      <span class="px-2.5 py-1 bg-amber text-black font-bold text-[11px] rounded shadow">100% PROFITABLE</span>
     </div>
   </div>
 
-  <!-- Key Revenue Metric Spotlight -->
-  <div class="revenue-banner relative overflow-hidden rounded-xl p-5 mb-4 border border-amber-400/30 bg-gradient-to-r from-zinc-950 via-black to-zinc-950 shadow-xl">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-      <div class="md:col-span-2">
-        <div class="font-mono text-[11px] text-amber-400 tracking-wider mb-1">
-          FINANCIAL MILESTONE // CO-FOUNDER TRACK RECORD
-        </div>
-        <h3 class="font-display text-2xl sm:text-3xl font-black text-white tracking-wide leading-tight">
-          <span class="text-gold-gradient">₹2,00,000 REVENUE</span> GENERATED IN 2 MONTHS
-        </h3>
-        <p class="text-slate-300 text-xs mt-2 leading-relaxed font-mono">
-          Co-founded <strong class="text-amber-300">Merrickson Services</strong> and <strong class="text-cyan-300">Raaw Theory Media</strong>. Scaled client web architecture, software engineering, and visual media to reach ₹2 Lakhs in revenue within 60 days.
-        </p>
-      </div>
+  <!-- Venture Tab Switcher -->
+  <div class="flex gap-1.5 mb-3">
+    <button
+      onclick={() => setVenture('revenue')}
+      class="flex-1 py-1 px-2 rounded text-xs font-mono font-bold transition-all cursor-pointer"
+      class:bg-[#cbb299]={activeVenture === 'revenue'}
+      class:text-black={activeVenture === 'revenue'}
+      class:text-amber={activeVenture !== 'revenue'}
+      class:border={activeVenture !== 'revenue'}
+      class:border-amber={activeVenture !== 'revenue'}
+    >
+      REVENUE METRICS
+    </button>
 
-      <div class="bg-black/80 p-3.5 rounded-lg border border-white/10 flex flex-col gap-2">
-        <div class="flex justify-between items-center font-mono text-[11px] border-b border-white/10 pb-1">
-          <span class="text-slate-400">TOTAL REVENUE:</span>
-          <span class="text-emerald-400 font-bold">₹200,000 INR</span>
-        </div>
-        <div class="flex justify-between items-center font-mono text-[11px] border-b border-white/10 pb-1">
-          <span class="text-slate-400">TIMELINE:</span>
-          <span class="text-amber-400 font-bold">60 DAYS</span>
-        </div>
-        <div class="flex justify-between items-center font-mono text-[11px]">
-          <span class="text-slate-400">SUCCESS RATE:</span>
-          <span class="text-cyan-400 font-bold">100% DELIVERED</span>
-        </div>
-      </div>
-    </div>
+    <button
+      onclick={() => setVenture('merrickson')}
+      class="flex-1 py-1 px-2 rounded text-xs font-mono font-bold transition-all cursor-pointer"
+      class:bg-[#cbb299]={activeVenture === 'merrickson'}
+      class:text-black={activeVenture === 'merrickson'}
+      class:text-amber={activeVenture !== 'merrickson'}
+      class:border={activeVenture !== 'merrickson'}
+      class:border-amber={activeVenture !== 'merrickson'}
+    >
+      MERRICKSON SERVICES
+    </button>
+
+    <button
+      onclick={() => setVenture('raaw')}
+      class="flex-1 py-1 px-2 rounded text-xs font-mono font-bold transition-all cursor-pointer"
+      class:bg-[#cbb299]={activeVenture === 'raaw'}
+      class:text-black={activeVenture === 'raaw'}
+      class:text-amber={activeVenture !== 'raaw'}
+      class:border={activeVenture !== 'raaw'}
+      class:border-amber={activeVenture !== 'raaw'}
+    >
+      RAAW THEORY MEDIA
+    </button>
   </div>
 
-  <!-- Active Venture Card -->
-  {#if activeTab === 'MERRICKSON'}
-    <div class="chrome-card p-5">
-      <div class="flex justify-between items-start mb-3">
-        <div class="flex items-center gap-2.5">
-          <div class="p-2 rounded-lg bg-amber-500/10 border border-amber-400/20 text-amber-400">
-            <Rocket class="w-6 h-6" />
-          </div>
-          <div>
-            <h3 class="font-display text-xl font-bold text-white tracking-wide">MERRICKSON SERVICES</h3>
-            <p class="font-mono text-[10px] text-amber-400 uppercase">CO-FOUNDER & TECH LEAD</p>
-          </div>
-        </div>
-        <span class="font-mono text-[10px] px-2.5 py-0.5 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20 font-semibold">
-          ACTIVE VENTURE
-        </span>
+  <!-- Tab Content -->
+  {#if activeVenture === 'revenue'}
+    <div class="bg-black p-3 rounded border border-[var(--border-amber-dark)] text-xs space-y-2.5">
+      <div class="flex justify-between items-center text-amber font-bold border-b border-[var(--border-amber-dark)] pb-1">
+        <span class="text-green-bright">₹2 LAKH REVENUE BREAKDOWN</span>
+        <span class="text-muted">60-DAY SPRINT</span>
       </div>
 
-      <p class="text-slate-300 text-xs font-mono leading-relaxed mb-4">
-        Full-scale technology agency providing bespoke web development, mobile software engineering, custom REST API microservices, and automated client software infrastructures.
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+        <div class="bg-[#0b0805] p-2 rounded border border-[var(--border-amber-dark)]">
+          <div class="text-amber font-bold">MERRICKSON SERVICES</div>
+          <div class="text-green-bright font-bold text-sm">Tech & Enterprise Systems</div>
+          <div class="text-muted text-[10px] mt-1">Delivered enterprise web applications, software platforms, and digital solutions for clients.</div>
+        </div>
+
+        <div class="bg-[#0b0805] p-2 rounded border border-[var(--border-amber-dark)]">
+          <div class="text-amber font-bold">RAAW THEORY MEDIA</div>
+          <div class="text-green-bright font-bold text-sm">Digital Brand Engine</div>
+          <div class="text-muted text-[10px] mt-1">Engineered digital media assets, high-converting growth UI, and content architecture for clients.</div>
+        </div>
+      </div>
+
+      <div class="text-amber/90 leading-relaxed text-[11px] pt-1">
+        Co-founded both ventures alongside my friend during 3rd year CSE at VIT Chennai. By combining software engineering with high-production digital media, we secured client contracts and generated over <span class="text-green-bright font-bold">₹2,00,000 INR in revenue within the first 2 months</span> of operation.
+      </div>
+    </div>
+  {:else if activeVenture === 'merrickson'}
+    <div class="bg-black p-3 rounded border border-[var(--border-amber-dark)] text-xs space-y-2">
+      <div class="flex justify-between items-center text-amber font-bold">
+        <span>ROLE: TECH LEAD & CO-FOUNDER</span>
+        <span class="text-green font-bold">REVENUE CONTRIBUTOR</span>
+      </div>
+      <p class="text-amber/90 leading-relaxed text-[11px]">
+        Co-founded Merrickson Services to build enterprise-grade Web Applications, custom client software platforms, and high-performance tech systems that directly contributed to our ₹2 Lakh revenue milestone.
       </p>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-[11px]">
-        <div class="flex items-center gap-2 p-2 rounded bg-black/40 border border-white/5 text-slate-300">
-          <ShieldCheck class="w-4 h-4 text-emerald-400" />
-          <span>Client Web & App Engineering</span>
-        </div>
-        <div class="flex items-center gap-2 p-2 rounded bg-black/40 border border-white/5 text-slate-300">
-          <ShieldCheck class="w-4 h-4 text-emerald-400" />
-          <span>API & Microservice Architectures</span>
-        </div>
+      <div class="flex gap-2 pt-1">
+        <span class="px-2 py-0.5 bg-[#1c150e] text-amber text-[10px] rounded border border-[var(--border-amber-dark)]">Enterprise Web</span>
+        <span class="px-2 py-0.5 bg-[#1c150e] text-green text-[10px] rounded border border-[var(--border-amber-dark)]">Software Engineering</span>
+        <span class="px-2 py-0.5 bg-[#1c150e] text-purple text-[10px] rounded border border-[var(--border-amber-dark)]">Client Platforms</span>
       </div>
     </div>
   {:else}
-    <div class="chrome-card p-5">
-      <div class="flex justify-between items-start mb-3">
-        <div class="flex items-center gap-2.5">
-          <div class="p-2 rounded-lg bg-cyan-500/10 border border-cyan-400/20 text-cyan-400">
-            <Layers class="w-6 h-6" />
-          </div>
-          <div>
-            <h3 class="font-display text-xl font-bold text-white tracking-wide">RAAW THEORY MEDIA</h3>
-            <p class="font-mono text-[10px] text-cyan-400 uppercase">CO-FOUNDER & MEDIA ARCHITECT</p>
-          </div>
-        </div>
-        <span class="font-mono text-[10px] px-2.5 py-0.5 rounded bg-cyan-400/10 text-cyan-300 border border-cyan-400/20 font-semibold">
-          ACTIVE VENTURE
-        </span>
+    <div class="bg-black p-3 rounded border border-[var(--border-amber-dark)] text-xs space-y-2">
+      <div class="flex justify-between items-center text-amber font-bold">
+        <span>ROLE: MEDIA ARCHITECT & CO-FOUNDER</span>
+        <span class="text-green font-bold">REVENUE CONTRIBUTOR</span>
       </div>
-
-      <p class="text-slate-300 text-xs font-mono leading-relaxed mb-4">
-        Digital media and creative technology house specializing in brand design, dynamic media systems, visual UI/UX identity, and interactive web showcases.
+      <p class="text-amber/90 leading-relaxed text-[11px]">
+        Co-founded Raaw Theory Media to architect high-production digital media pipelines, content engines, and growth UI for startups and agency clients.
       </p>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-[11px]">
-        <div class="flex items-center gap-2 p-2 rounded bg-black/40 border border-white/5 text-slate-300">
-          <ShieldCheck class="w-4 h-4 text-cyan-400" />
-          <span>Digital Brand & Content Strategy</span>
-        </div>
-        <div class="flex items-center gap-2 p-2 rounded bg-black/40 border border-white/5 text-slate-300">
-          <ShieldCheck class="w-4 h-4 text-cyan-400" />
-          <span>Interactive Visual UI/UX & Motion Design</span>
-        </div>
+      <div class="flex gap-2 pt-1">
+        <span class="px-2 py-0.5 bg-[#1c150e] text-amber text-[10px] rounded border border-[var(--border-amber-dark)]">Brand Engineering</span>
+        <span class="px-2 py-0.5 bg-[#1c150e] text-green text-[10px] rounded border border-[var(--border-amber-dark)]">Content Pipeline</span>
+        <span class="px-2 py-0.5 bg-[#1c150e] text-purple text-[10px] rounded border border-[var(--border-amber-dark)]">Growth UI</span>
       </div>
     </div>
   {/if}

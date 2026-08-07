@@ -1,118 +1,59 @@
 <script>
   import { audio } from '../audio.js';
-  import { Volume2, VolumeX, Disc, Zap } from '@lucide/svelte';
 
   let { theme = 'gold' } = $props();
 
-  let isMuted = $state(false);
+  const pads = [
+    { label: 'HARDER', sound: 'harder', key: 'Q' },
+    { label: 'BETTER', sound: 'better', key: 'W' },
+    { label: 'FASTER', sound: 'faster', key: 'E' },
+    { label: 'STRONGER', sound: 'stronger', key: 'R' },
+    { label: 'ROBOT', sound: 'robot', key: 'A' },
+    { label: 'HUMAN', sound: 'human', key: 'S' },
+    { label: 'TECHNOLOGIC', sound: 'technologic', key: 'D' },
+    { label: 'DISCO BASS', sound: 'funk', key: 'F' },
+    { label: 'KICK', sound: 'kick', key: 'Z' },
+    { label: 'SNARE', sound: 'snare', key: 'X' },
+    { label: 'LASER', sound: 'laser', key: 'C' }
+  ];
+
   let activePad = $state(null);
 
-  const vocalPads = [
-    { id: 'harder', label: 'HARDER', note: 'A4 Synth', color: '#ffd700' },
-    { id: 'better', label: 'BETTER', note: 'C#5 Synth', color: '#00f0ff' },
-    { id: 'faster', label: 'FASTER', note: 'E5 Synth', color: '#ff0055' },
-    { id: 'stronger', label: 'STRONGER', note: 'A5 Octave', color: '#00ff66' },
-    { id: 'robot', label: 'ROBOT', note: 'Vocoder FX', color: '#ffaa00' },
-    { id: 'human', label: 'HUMAN', note: 'Filter Sweep', color: '#a855f7' },
-    { id: 'technologic', label: 'TECHNOLOGIC', note: 'Arpeggio', color: '#ec4899' },
-    { id: 'around_world', label: 'DISCO BASS', note: 'Funk Loop', color: '#3b82f6' }
-  ];
-
-  const rhythmPads = [
-    { id: 'kick', label: 'KICK DRUM', type: 'Beat' },
-    { id: 'snare', label: 'SNARE DRUM', type: 'Beat' },
-    { id: 'laser', label: 'LASER ZAP', type: 'FX' }
-  ];
-
-  function triggerPad(id) {
-    activePad = id;
-    audio.playSound(id);
+  function triggerSound(pad) {
+    activePad = pad.label;
+    audio.playSound(pad.sound);
     setTimeout(() => {
-      if (activePad === id) activePad = null;
+      if (activePad === pad.label) activePad = null;
     }, 200);
-  }
-
-  function toggleMute() {
-    isMuted = audio.toggleMute();
   }
 </script>
 
-<div class="soundboard-card chrome-card p-5 my-6">
-  <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-3">
-    <div>
-      <div class="flex items-center gap-2">
-        <Disc class="w-5 h-5 text-amber-400" />
-        <h2 class="font-display text-xl font-bold tracking-wide text-gold-gradient uppercase">
-          04 // DAFT SYNTH VOCAL ENGINE
-        </h2>
-      </div>
-      <p class="font-mono text-[11px] text-slate-400 mt-0.5">
-        PROCEDURAL WEB AUDIO SYNTHESIZER // ZERO ASSETS
-      </p>
-    </div>
-
-    <button 
-      onclick={toggleMute} 
-      class="oled-button text-[11px] py-1.5 px-3"
-      aria-label="Toggle Sound"
-    >
-      {#if isMuted}
-        <VolumeX class="w-3.5 h-3.5 text-red-500" />
-        <span>MUTED</span>
-      {:else}
-        <Volume2 class="w-3.5 h-3.5 text-emerald-400" />
-        <span>AUDIO ON</span>
-      {/if}
-    </button>
+<div class="retro-sub-box font-mono my-2 p-3">
+  <div class="sub-box-header">
+    <span class="text-amber-bright font-bold text-xs flex items-center gap-1.5">
+      <span class="w-1.5 h-1.5 rounded-full bg-green-bright animate-ping"></span>
+      <span>VOCODER SYNTHESIZER SOUNDBOARD</span>
+    </span>
+    <span class="text-muted text-[10px]">↗</span>
   </div>
 
-  <!-- Vocal Launchpad Matrix -->
-  <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-4">
-    {#each vocalPads as pad}
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+    {#each pads as p}
       <button
-        onclick={() => triggerPad(pad.id)}
-        class="pad-button relative p-3 rounded-lg border font-display flex flex-col items-center justify-center transition-all select-none overflow-hidden"
-        class:active={activePad === pad.id}
-        style="border-color: {pad.color}30; background: rgba(10, 10, 14, 0.8);"
+        onclick={() => triggerSound(p)}
+        class="bg-black p-2.5 rounded border border-[var(--border-amber)] hover:border-amber transition-all cursor-pointer text-left flex flex-col justify-between h-16 select-none active:scale-95"
+        class:bg-amber={activePad === p.label}
+        class:text-black={activePad === p.label}
+        class:font-bold={activePad === p.label}
       >
-        <span class="text-[10px] font-mono text-slate-400 mb-0.5">{pad.note}</span>
-        <span class="text-xs font-bold tracking-wider" style="color: {pad.color};">
-          {pad.label}
-        </span>
-        <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style="background-color: {pad.color};"></span>
+        <div class="flex justify-between items-center text-[9px] opacity-70">
+          <span>[{p.key}]</span>
+          <span>♪</span>
+        </div>
+        <div class="text-xs font-bold truncate">
+          {p.label}
+        </div>
       </button>
     {/each}
   </div>
-
-  <!-- Rhythm & FX Section -->
-  <div class="bg-black/60 p-3 rounded-lg border border-white/5 flex flex-wrap justify-between items-center gap-2">
-    <div class="flex items-center gap-1.5 font-mono text-[11px] text-slate-400">
-      <Zap class="w-3.5 h-3.5 text-cyan-400" />
-      <span>PERCUSSION DECK</span>
-    </div>
-
-    <div class="flex flex-wrap gap-2">
-      {#each rhythmPads as rpad}
-        <button
-          onclick={() => triggerPad(rpad.id)}
-          class="px-3 py-1 rounded font-mono text-[10px] font-bold uppercase transition-all border border-cyan-500/30 bg-cyan-950/20 text-cyan-300 hover:bg-cyan-500 hover:text-black"
-          class:active={activePad === rpad.id}
-        >
-          {rpad.label}
-        </button>
-      {/each}
-    </div>
-  </div>
 </div>
-
-<style>
-  .pad-button:hover {
-    transform: translateY(-1px);
-    border-color: rgba(255, 255, 255, 0.4) !important;
-  }
-
-  .pad-button:active, .pad-button.active {
-    transform: scale(0.97);
-    filter: brightness(1.6);
-  }
-</style>

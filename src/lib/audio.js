@@ -7,7 +7,7 @@ class SoundEngine {
     this.isMuted = false;
     this.isPlayingBeat = false;
     this.beatTimer = null;
-    this.currentTempo = 120; // 120 BPM synthwave pulse
+    this.step = 0;
   }
 
   init() {
@@ -22,37 +22,69 @@ class SoundEngine {
     }
   }
 
-  // Play custom synthesized sound preset
+  // Play continuous synthwave beat loop
+  startBeat() {
+    this.init();
+    if (this.isPlayingBeat) return;
+    this.isPlayingBeat = true;
+    this.step = 0;
+
+    this.beatTimer = setInterval(() => {
+      if (!this.isPlayingBeat || this.isMuted) return;
+
+      // Step 0, 4, 8, 12: Kick drum
+      if (this.step % 4 === 0) {
+        this.playKick();
+      }
+      // Step 4, 12: Snare drum
+      if (this.step % 8 === 4) {
+        this.playSnare();
+      }
+      // Arpeggio synth tone on every step
+      const arpFreqs = [220, 277.18, 329.63, 440, 554.37, 659.25, 440, 329.63];
+      const freq = arpFreqs[this.step % arpFreqs.length];
+      this.playVocoderTone(freq, 0.12, 'sawtooth');
+
+      this.step = (this.step + 1) % 16;
+    }, 150); // ~100 BPM synth beat
+  }
+
+  stopBeat() {
+    this.isPlayingBeat = false;
+    if (this.beatTimer) {
+      clearInterval(this.beatTimer);
+      this.beatTimer = null;
+    }
+  }
+
   playSound(type) {
     this.init();
     if (this.isMuted || !this.ctx) return;
 
-    const now = this.ctx.currentTime;
-
     switch (type) {
       case 'harder':
-        this.playVocoderTone(440, 0.4, 'sawtooth'); // A4 synth punch
+        this.playVocoderTone(440, 0.4, 'sawtooth');
         break;
       case 'better':
-        this.playVocoderTone(554.37, 0.4, 'sawtooth'); // C#5 synth punch
+        this.playVocoderTone(554.37, 0.4, 'sawtooth');
         break;
       case 'faster':
-        this.playVocoderTone(659.25, 0.4, 'sawtooth'); // E5 synth punch
+        this.playVocoderTone(659.25, 0.4, 'sawtooth');
         break;
       case 'stronger':
-        this.playVocoderTone(880, 0.5, 'sawtooth'); // A5 high punch
+        this.playVocoderTone(880, 0.5, 'sawtooth');
         break;
       case 'robot':
-        this.playRobotVocal(220, 0.6); // Robot voice effect
+        this.playRobotVocal(220, 0.6);
         break;
       case 'human':
-        this.playFilterSweep(330, 0.5); // Warm human synth sweep
+        this.playFilterSweep(330, 0.5);
         break;
       case 'technologic':
-        this.playArpSequence(); // Rapid 4-note synth arpeggio
+        this.playArpSequence();
         break;
       case 'around_world':
-        this.playFunkBassline(); // Disco synth bassline snippet
+        this.playFunkBassline();
         break;
       case 'kick':
         this.playKick();
@@ -68,8 +100,8 @@ class SoundEngine {
     }
   }
 
-  // Vocoder-style synth note with quick attack/decay
   playVocoderTone(freq, duration, type = 'sawtooth') {
+    if (!this.ctx) return;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
     const filter = this.ctx.createBiquadFilter();
@@ -77,12 +109,11 @@ class SoundEngine {
     osc.type = type;
     osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
 
-    // Dynamic lowpass filter for classic synth grit
     filter.type = 'lowpass';
     filter.frequency.setValueAtTime(2400, this.ctx.currentTime);
     filter.Q.setValueAtTime(4, this.ctx.currentTime);
 
-    gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+    gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
 
     osc.connect(filter);
@@ -93,23 +124,21 @@ class SoundEngine {
     osc.stop(this.ctx.currentTime + duration);
   }
 
-  // Robot Vocoder vocal effect using ring modulation
   playRobotVocal(freq, duration) {
+    if (!this.ctx) return;
     const carrier = this.ctx.createOscillator();
     const modulator = this.ctx.createOscillator();
-    const modGain = this.ctx.createGain();
     const mainGain = this.ctx.createGain();
 
     carrier.type = 'sawtooth';
     carrier.frequency.setValueAtTime(freq, this.ctx.currentTime);
 
     modulator.type = 'sine';
-    modulator.frequency.setValueAtTime(60, this.ctx.currentTime); // 60Hz robot buzz
+    modulator.frequency.setValueAtTime(60, this.ctx.currentTime);
 
-    modGain.gain.setValueAtTime(200, this.ctx.currentTime);
     modulator.connect(carrier.frequency);
 
-    mainGain.gain.setValueAtTime(0.35, this.ctx.currentTime);
+    mainGain.gain.setValueAtTime(0.3, this.ctx.currentTime);
     mainGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
 
     carrier.connect(mainGain);
@@ -121,8 +150,8 @@ class SoundEngine {
     carrier.stop(this.ctx.currentTime + duration);
   }
 
-  // Filter sweep synth sound
   playFilterSweep(startFreq, duration) {
+    if (!this.ctx) return;
     const osc = this.ctx.createOscillator();
     const filter = this.ctx.createBiquadFilter();
     const gain = this.ctx.createGain();
@@ -145,7 +174,6 @@ class SoundEngine {
     osc.stop(this.ctx.currentTime + duration);
   }
 
-  // Technologic rapid arpeggio
   playArpSequence() {
     const notes = [440, 554.37, 659.25, 880];
     notes.forEach((freq, idx) => {
@@ -155,7 +183,6 @@ class SoundEngine {
     });
   }
 
-  // Disco synth bassline
   playFunkBassline() {
     const bassNotes = [110, 110, 146.83, 130.81, 164.81];
     bassNotes.forEach((freq, idx) => {
@@ -165,7 +192,6 @@ class SoundEngine {
     });
   }
 
-  // Laser zap sound effect
   playLaser() {
     this.init();
     if (this.isMuted || !this.ctx) return;
@@ -186,7 +212,6 @@ class SoundEngine {
     osc.stop(this.ctx.currentTime + 0.25);
   }
 
-  // Punchy Kick Drum synthesis
   playKick() {
     this.init();
     if (this.isMuted || !this.ctx) return;
@@ -196,7 +221,7 @@ class SoundEngine {
     osc.frequency.setValueAtTime(150, this.ctx.currentTime);
     osc.frequency.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
 
-    gain.gain.setValueAtTime(0.8, this.ctx.currentTime);
+    gain.gain.setValueAtTime(0.7, this.ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
 
     osc.connect(gain);
@@ -206,12 +231,11 @@ class SoundEngine {
     osc.stop(this.ctx.currentTime + 0.3);
   }
 
-  // Snare Drum synthesis using white noise & bandpass filter
   playSnare() {
     this.init();
     if (this.isMuted || !this.ctx) return;
 
-    const bufferSize = this.ctx.sampleRate * 0.2;
+    const bufferSize = this.ctx.sampleRate * 0.15;
     const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
     const data = buffer.getChannelData(0);
     for (let i = 0; i < bufferSize; i++) {
@@ -226,8 +250,8 @@ class SoundEngine {
     filter.frequency.value = 1000;
 
     const gain = this.ctx.createGain();
-    gain.gain.setValueAtTime(0.4, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.2);
+    gain.gain.setValueAtTime(0.35, this.ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.15);
 
     noise.connect(filter);
     filter.connect(gain);
@@ -236,9 +260,9 @@ class SoundEngine {
     noise.start();
   }
 
-  // Toggle Mute
   toggleMute() {
     this.isMuted = !this.isMuted;
+    if (this.isMuted) this.stopBeat();
     return this.isMuted;
   }
 }
